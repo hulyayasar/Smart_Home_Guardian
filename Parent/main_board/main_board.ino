@@ -75,8 +75,6 @@ void setup() {
   radio.openWritingPipe(address2);
   radio.setPALevel(RF24_PA_MIN);
 
-
-
   delay(2000);
 
   // lcd.setBacklight(LOW);
@@ -84,6 +82,15 @@ void setup() {
 
 void loop() {
 
-  
+  int room_no = room_status[0];
+  int pir = room_status[1];
+  int gas = room_status[2];
+  int alcohol = room_status[3];
+  int temp = room_status[4];
+  int humidity = room_status[5];
+
+  Serial.println(room_status(1));
+
+
 
 }
