@@ -3,24 +3,15 @@
 #include <RF24.h>
 
 
-RF24 radio(7, 8);                    // CE, CSN
-const byte address[6] = "00001"; // transmit  address
-const byte address2[6] = "00002"; // receive trnasmit 
+RF24 radio(7, 8);                  // CE, CSN
+const byte address[6] = "00002";   // transmit  address
+const byte address2[6] = "00001";  // receive trnasmit
+
+int incoming_request;
 
 
 
-int room_status(int room_no)
-{
-  int room_reply_arr[6];
 
-  radio.stopListening();
-  radio.write(&room_no, sizeof(room_no));
-  radio.startListening();
-  radio.read(&room_reply_arr, sizeof(room_reply_arr));
-
-  return room_reply_arr;
-
-}
 
 void setup() {
 
@@ -38,15 +29,28 @@ void setup() {
 
 void loop() {
 
-  int room_no = room_status[0];
-  int pir = room_status[1];
-  int gas = room_status[2];
-  int alcohol = room_status[3];
-  int temp = room_status[4];
-  int humidity = room_status[5];
+  radio.startListening();
 
-  Serial.println(room_status(1));
+  radio.read(&incoming_request, sizeof(incoming_request));
 
 
 
+  int room_reply_arr = 10000;
+
+  if (incoming_request == 1) {
+    Serial.println(incoming_request);
+
+    // room_reply_arr[0] = 1; // room_no
+    // room_reply_arr[1] = 0; // pir
+    // room_reply_arr[2] = 0; // gas
+    // room_reply_arr[3] = 0; // alcohol
+    // room_reply_arr[4] = 0; // temp
+    // room_reply_arr[5] = 0; // humidity
+
+    radio.stopListening();
+
+    for (int i = 0; i <= 50; i++) {
+      radio.write(&room_reply_arr, sizeof(room_reply_arr));
+    }
+  }
 }
