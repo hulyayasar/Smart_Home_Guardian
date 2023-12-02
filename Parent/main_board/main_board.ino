@@ -5,8 +5,8 @@
 
 LiquidCrystal_I2C lcd(0x27, 20, 4);  // I2C address 0x27, 16 column and 2 rows
 RF24 radio(7, 8);                    // CE, CSN
-const byte address[6] = "00001";
-const byte address2[6] = "00002";
+const byte address[6] = "00001"; // transmit  address
+const byte address2[6] = "00002"; // receive trnasmit 
 
 
 void welcome_msg() {
@@ -52,8 +52,6 @@ int room_status(int room_no)
 
   radio.stopListening();
   radio.write(&room_no, sizeof(room_no));
-  delay(20);
-
   radio.startListening();
   radio.read(&room_reply_arr, sizeof(room_reply_arr));
 
