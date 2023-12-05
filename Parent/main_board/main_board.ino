@@ -8,7 +8,6 @@ RF24 radio(7, 8);                    // CE, CSN
 const byte address[6] = "00001";     // transmit  address
 const byte address2[6] = "00002";    // receive trnasmit
 
-
 void welcome_msg() {
   lcd.setCursor(0, 0);
   lcd.print("                    ");
@@ -44,6 +43,21 @@ void welcome_msg() {
   lcd.print("SMART HOUSE GUARDIAN");
   lcd.setCursor(0, 3);
   lcd.print("                    ");
+  delay(2000);
+}
+
+void status_display() {
+
+  lcd.setCursor(0, 0);
+  lcd.print("ROOM          STATUS");
+  lcd.setCursor(0, 1);
+  lcd.print(" R1  |       OK     ");
+  lcd.setCursor(0, 2);
+  lcd.print(" R2  |       OK     ");
+  lcd.setCursor(0, 3);
+  lcd.print(" R3  |       OK     ");
+  delay(300);
+
 }
 
 int room_status(int room_no) {
@@ -92,5 +106,6 @@ void loop() {
   // int temp = room_status[4];
   // int humidity = room_status[5];
 
-  room_status(1);
+  room_status(2);
+  status_display();
 }
