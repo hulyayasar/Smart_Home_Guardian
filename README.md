@@ -1,9 +1,9 @@
-# Smart_Home_Porject
-**Authors**
-Chasindu, Kumarasiri 
-Hulya, Yasar 
-Maureen, Rahman 
-Fengyu, Yang
-
+# Smart_Home_Porject<br>
+**Authors**<br>
+Chasindu Kumarasiri <br>
+Hulya Yasar <br>
+Maureen Rahman <br>
+Fengyu Yang<br>
+<br>
 
 Checking All Rooms Temperature, Alcohol, Carbon Dioxide, Humanity, PIR
