@@ -9,10 +9,6 @@ const byte address2[6] = "00001";  // receive trnasmit
 
 int incoming_request;
 
-
-
-
-
 void setup() {
 
   Serial.begin(9600);
@@ -21,13 +17,8 @@ void setup() {
   radio.openReadingPipe(0, address);
   radio.openWritingPipe(address2);
   radio.setPALevel(RF24_PA_MIN);
-  pinMode(A0,INPUT);
-  pinMode(A1,INPUT);
-
-
-
-
-
+  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
 
   // lcd.setBacklight(LOW);
 }
@@ -39,13 +30,11 @@ void loop() {
   Serial.println(gasRead);
   Serial.println(alcohol);
 
-  if (gasRead >= 160)
-  {
+  if (gasRead >= 160) {
     room_reply_arr = room_reply_arr + 1000;
   }
 
-    if (alcohol >= 20)
-  {
+  if (alcohol >= 20) {
     room_reply_arr = room_reply_arr + 100;
   }
 
@@ -53,10 +42,6 @@ void loop() {
 
   radio.startListening();
   radio.read(&incoming_request, sizeof(incoming_request));
-
-
-
-
 
   if (incoming_request == 1) {
     Serial.println(incoming_request);
