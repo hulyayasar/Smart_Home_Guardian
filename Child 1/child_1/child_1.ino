@@ -21,27 +21,47 @@ void setup() {
   radio.openReadingPipe(0, address);
   radio.openWritingPipe(address2);
   radio.setPALevel(RF24_PA_MIN);
+  pinMode(A0,INPUT);
+  pinMode(A1,INPUT);
 
-  delay(2000);
+
+
+
+
 
   // lcd.setBacklight(LOW);
 }
 
 void loop() {
+  int gasRead = analogRead(A0);
+  int alcohol = analogRead(A1);
+  int room_reply_arr = 10000;
+  Serial.println(gasRead);
+  Serial.println(alcohol);
+
+  if (gasRead >= 195)
+  {
+    room_reply_arr = room_reply_arr + 1000
+  }
+
+    if (alcohol >= 5)
+  {
+    room_reply_arr = room_reply_arr + 100
+  }
+
+  delay(500);
 
   radio.startListening();
-
   radio.read(&incoming_request, sizeof(incoming_request));
 
 
 
-  int room_reply_arr = 10000;
+
 
   if (incoming_request == 1) {
     Serial.println(incoming_request);
 
     // room_reply_arr[0] = 1; // room_no
-    // room_reply_arr[1] = 0; // pir
     // room_reply_arr[2] = 0; // gas
     // room_reply_arr[3] = 0; // alcohol
     // room_reply_arr[4] = 0; // temp
