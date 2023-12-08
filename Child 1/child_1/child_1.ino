@@ -39,17 +39,17 @@ void loop() {
   Serial.println(gasRead);
   Serial.println(alcohol);
 
-  if (gasRead >= 195)
+  if (gasRead >= 160)
   {
-    room_reply_arr = room_reply_arr + 1000
+    room_reply_arr = room_reply_arr + 1000;
   }
 
-    if (alcohol >= 5)
+    if (alcohol >= 20)
   {
-    room_reply_arr = room_reply_arr + 100
+    room_reply_arr = room_reply_arr + 100;
   }
 
-  delay(500);
+
 
   radio.startListening();
   radio.read(&incoming_request, sizeof(incoming_request));

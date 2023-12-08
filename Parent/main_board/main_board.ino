@@ -7,6 +7,7 @@ LiquidCrystal_I2C lcd(0x27, 20, 4);  // I2C address 0x27, 16 column and 2 rows
 RF24 radio(7, 8);                    // CE, CSN
 const byte address[6] = "00001";     // transmit  address
 const byte address2[6] = "00002";    // receive trnasmit
+int data;
 
 void welcome_msg() {
   lcd.setCursor(0, 0);
@@ -46,18 +47,35 @@ void welcome_msg() {
   delay(2000);
 }
 
-void status_display() {
+void status_display(int room_no, int msg) {
+  Serial.println(msg);
 
   lcd.setCursor(0, 0);
   lcd.print("ROOM          STATUS");
-  lcd.setCursor(0, 1);
-  lcd.print(" R1  |       OK     ");
+
+
+  if (10000 <= data < 9999) {
+    if (data == 10000) {
+      lcd.setCursor(0, 1);
+      lcd.print(" R1  |       OK     ");
+    } else if (data == 11000) {
+      lcd.setCursor(0, 1);
+      lcd.print(" R1  |       CO2    ");
+    } else if (data == 10100) {
+      lcd.setCursor(0, 1);
+      lcd.print(" R1  |     ALCOHOL  ");
+    }
+
+    else if (data == 11100) {
+      lcd.setCursor(0, 1);
+      lcd.print(" R1  | GAS & ALCOHOL");
+    }
+  }
   lcd.setCursor(0, 2);
   lcd.print(" R2  |       OK     ");
   lcd.setCursor(0, 3);
   lcd.print(" R3  |       OK     ");
   delay(300);
-
 }
 
 int room_status(int room_no) {
@@ -68,14 +86,15 @@ int room_status(int room_no) {
   for (int i = 0; i <= 100; i++) {
     radio.read(&room_reply_arr, sizeof(room_reply_arr));
     if (room_reply_arr > 0) {
-      Serial.println(room_reply_arr);
+      return room_reply_arr;
+      //Serial.println(room_reply_arr);
     }
   }
 
   radio.stopListening();
   radio.write(&room_no, sizeof(room_no));
 
-  return room_reply_arr;
+  
 }
 
 void setup() {
@@ -106,6 +125,7 @@ void loop() {
   // int temp = room_status[4];
   // int humidity = room_status[5];
 
-  room_status(2);
-  status_display();
+  data = room_status(1);
+  Serial.println(data);
+  status_display(1, data);
 }
