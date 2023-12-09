@@ -8,6 +8,8 @@ RF24 radio(7, 8);                    // CE, CSN
 const byte address[6] = "00001";     // transmit  address
 const byte address2[6] = "00002";    // receive trnasmit
 int data;
+String lcd_data;
+String lcd_msg;
 
 void welcome_msg() {
   lcd.setCursor(0, 0);
@@ -45,36 +47,79 @@ void welcome_msg() {
   lcd.setCursor(0, 3);
   lcd.print("                    ");
   delay(2000);
+  lcd.setCursor(0, 0);
+  lcd.print("                    ");
+  lcd.setCursor(0, 1);
+  lcd.print("                    ");
+  lcd.setCursor(0, 2);
+  lcd.print("                    ");
+  lcd.setCursor(0, 3);
+  lcd.print("                    ");
 }
 
-void status_display(int room_no, int msg) {
-  Serial.println(msg);
+void status_display(int room, int data) {
+
+  Serial.print(room);
+  Serial.print(" - ");
+  Serial.print(data);
+  Serial.println("");
+
+  char char_msg[6];
+  itoa(data, char_msg, 10);
 
   lcd.setCursor(0, 0);
-  lcd.print("ROOM          STATUS");
+  lcd.print("ROOM   STATUS");
 
-
-  if (10000 <= data < 9999) {
-    if (data == 10000) {
-      lcd.setCursor(0, 1);
-      lcd.print(" R1  |       OK     ");
-    } else if (data == 11000) {
-      lcd.setCursor(0, 1);
-      lcd.print(" R1  |       CO2    ");
-    } else if (data == 10100) {
-      lcd.setCursor(0, 1);
-      lcd.print(" R1  |     ALCOHOL  ");
+  if (room == 1) {
+    lcd_msg = "";
+    
+    if (char_msg[1] == '0' && char_msg[2] == '0' && char_msg[3] == '0' && char_msg[4] == '0') {
+      lcd_msg = "OK           ";
+      lcd.setCursor(0, room);
+      lcd_data = "";
+      lcd_data = " R" + String(room) + "  | " + lcd_msg;
+      lcd.print(lcd_data);
+      //lcd_msg = "";
     }
-
-    else if (data == 11100) {
-      lcd.setCursor(0, 1);
-      lcd.print(" R1  | GAS & ALCOHOL");
+    if (char_msg[1] == '1') {
+      lcd.setCursor(0, room);
+      lcd_data = "";
+      lcd_msg = lcd_msg + "CO2 ";
+      lcd_data = " R" + String(room) + "  | " + lcd_msg;
+      lcd.print(lcd_data);
+    }
+    if (char_msg[2] == '1') {
+      lcd.setCursor(0, room);
+      lcd_data = "";
+      lcd_msg = lcd_msg + "AL ";
+      lcd_data = " R" + String(room) + "  | " + lcd_msg;
+      lcd.print(lcd_data);
     }
   }
-  lcd.setCursor(0, 2);
-  lcd.print(" R2  |       OK     ");
-  lcd.setCursor(0, 3);
-  lcd.print(" R3  |       OK     ");
+
+  if (room == 2) {
+    lcd_msg = "";
+    lcd.setCursor(0, room);
+    if (char_msg[1] == '0' && char_msg[2] == '0' && char_msg[3] == '0' && char_msg[4] == '0') {
+      lcd_msg = "OK           ";
+      lcd.setCursor(0, room);
+      lcd_data = " R" + String(room) + "  | " + lcd_msg;
+      lcd.print(lcd_data);
+      lcd_msg = "";
+    }
+    if (char_msg[1] == '1') {
+      lcd_msg = lcd_msg + "CO2 ";
+      lcd_data = " R" + String(room) + "  | " + lcd_msg;
+      lcd.print(lcd_data);
+    }
+    if (char_msg[2] == '1') {
+      lcd_msg = lcd_msg + "AL ";
+      lcd_data = " R" + String(room) + "  | " + lcd_msg;
+      lcd.print(lcd_data);
+    }
+  }
+
+
   delay(300);
 }
 
@@ -85,7 +130,7 @@ int room_status(int room_no) {
 
   for (int i = 0; i <= 100; i++) {
     radio.read(&room_reply_arr, sizeof(room_reply_arr));
-    if (room_reply_arr > 0) {
+    if (room_reply_arr >= (room_no * 10000)) {
       return room_reply_arr;
       //Serial.println(room_reply_arr);
     }
@@ -93,8 +138,6 @@ int room_status(int room_no) {
 
   radio.stopListening();
   radio.write(&room_no, sizeof(room_no));
-
-  
 }
 
 void setup() {
@@ -116,16 +159,28 @@ void setup() {
   // lcd.setBacklight(LOW);
 }
 
+
 void loop() {
 
-  // int room_no = room_status[0];
-  // int pir = room_status[1];
-  // int gas = room_status[2];
-  // int alcohol = room_status[3];
-  // int temp = room_status[4];
-  // int humidity = room_status[5];
-
   data = room_status(1);
-  Serial.println(data);
+  if (data == 0) {
+    data = room_status(1);
+  }
   status_display(1, data);
+  delay(20);
+
+  data = room_status(2);
+  if (data == 0) {
+    data = room_status(2);
+  }
+  status_display(2, 20000);
+  delay(20);
+
+  data = room_status(3);
+  if (data == 0) {
+    data = room_status(3);
+  }
+  status_display(3, data);
+  delay(20);
+  //Serial.println(data);
 }
