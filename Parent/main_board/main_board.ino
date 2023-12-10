@@ -108,11 +108,13 @@ void status_display(int room, int data) {
       lcd_msg = "";
     }
     if (char_msg[1] == '1') {
+      lcd.setCursor(0, room);
       lcd_msg = lcd_msg + "CO2 ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
     }
     if (char_msg[2] == '1') {
+      lcd.setCursor(0, room);
       lcd_msg = lcd_msg + "AL ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
@@ -129,11 +131,13 @@ void status_display(int room, int data) {
       lcd_msg = "";
     }
     if (char_msg[1] == '1') {
+      lcd.setCursor(0, room);
       lcd_msg = lcd_msg + "CO2 ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
     }
     if (char_msg[2] == '1') {
+      lcd.setCursor(0, room);
       lcd_msg = lcd_msg + "AL ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);

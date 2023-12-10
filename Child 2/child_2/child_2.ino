@@ -19,6 +19,8 @@ void setup() {
   radio.setPALevel(RF24_PA_MIN);
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
+  pinMode(A4, OUTPUT);
+  analogWrite(A4,150);
 
   // lcd.setBacklight(LOW);
 }
