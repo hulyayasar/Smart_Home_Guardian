@@ -27,8 +27,9 @@ void loop() {
   int gasRead = analogRead(A0);
   int alcohol = analogRead(A1);
   int room_reply_arr = 10000;
-  Serial.println(gasRead);
-  Serial.println(alcohol);
+
+  // Serial.println(gasRead);
+  // Serial.println(alcohol);
 
   if (gasRead >= 160) {
     room_reply_arr = room_reply_arr + 1000;
