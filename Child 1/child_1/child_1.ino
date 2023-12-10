@@ -20,6 +20,13 @@ void setup() {
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
 
+  pinMode(D3, OUTPUT);
+  pinMode(D4, OUTPUT);
+
+  digitalWrite(D3, LOW);
+  digitalWrite(D4, LOW);
+
+
   // lcd.setBacklight(LOW);
 }
 
@@ -37,6 +44,7 @@ void loop() {
 
   if (alcohol >= 20) {
     room_reply_arr = room_reply_arr + 100;
+  } else {
   }
 
 
