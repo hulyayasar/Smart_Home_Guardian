@@ -70,9 +70,9 @@ void status_display(int room, int data) {
   lcd.setCursor(0, 0);
   lcd.print("ROOM   STATUS");
 
-  if (room == 1) {
+  if (room == 1 && char_msg[0] == '1') {
     lcd_msg = "";
-    
+
     if (char_msg[1] == '0' && char_msg[2] == '0' && char_msg[3] == '0' && char_msg[4] == '0') {
       lcd_msg = "OK           ";
       lcd.setCursor(0, room);
@@ -97,33 +97,48 @@ void status_display(int room, int data) {
     }
   }
 
-  if (room == 2) {
+  if (room == 2 && char_msg[0] == '2') {
     lcd_msg = "";
-    
+    lcd.setCursor(0, room);
     if (char_msg[1] == '0' && char_msg[2] == '0' && char_msg[3] == '0' && char_msg[4] == '0') {
       lcd_msg = "OK           ";
       lcd.setCursor(0, room);
-      lcd_data = "";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
-      //lcd_msg = "";
+      lcd_msg = "";
     }
     if (char_msg[1] == '1') {
-      lcd.setCursor(0, room);
-      lcd_data = "";
       lcd_msg = lcd_msg + "CO2 ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
     }
     if (char_msg[2] == '1') {
-      lcd.setCursor(0, room);
-      lcd_data = "";
       lcd_msg = lcd_msg + "AL ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
     }
   }
-
+  if (room == 3 && char_msg[0] == '3') {
+    lcd_msg = "";
+    lcd.setCursor(0, room);
+    if (char_msg[1] == '0' && char_msg[2] == '0' && char_msg[3] == '0' && char_msg[4] == '0') {
+      lcd_msg = "OK           ";
+      lcd.setCursor(0, room);
+      lcd_data = " R" + String(room) + "  | " + lcd_msg;
+      lcd.print(lcd_data);
+      lcd_msg = "";
+    }
+    if (char_msg[1] == '1') {
+      lcd_msg = lcd_msg + "CO2 ";
+      lcd_data = " R" + String(room) + "  | " + lcd_msg;
+      lcd.print(lcd_data);
+    }
+    if (char_msg[2] == '1') {
+      lcd_msg = lcd_msg + "AL ";
+      lcd_data = " R" + String(room) + "  | " + lcd_msg;
+      lcd.print(lcd_data);
+    }
+  }
 
   delay(300);
 }
@@ -178,7 +193,7 @@ void loop() {
   if (data == 0) {
     data = room_status(2);
   }
-  status_display(2, data);
+  status_display(2, 20000);
   delay(20);
 
   data = room_status(3);
