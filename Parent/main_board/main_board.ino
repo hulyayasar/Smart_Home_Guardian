@@ -57,6 +57,13 @@ void welcome_msg() {
   lcd.print("                    ");
 }
 
+void buz_status(int status) {
+  if (status == 1) {
+    analogWrite(A0, 0);
+  } else {
+    analogWrite(A0, 255);
+  }
+}
 void status_display(int room, int data) {
 
   Serial.print(room);
@@ -79,6 +86,7 @@ void status_display(int room, int data) {
       lcd_data = "";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
+      buz_status(0);
       //lcd_msg = "";
     }
     if (char_msg[1] == '1') {
@@ -87,6 +95,7 @@ void status_display(int room, int data) {
       lcd_msg = lcd_msg + "CO2 ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
+      buz_status(1);
     }
     if (char_msg[2] == '1') {
       lcd.setCursor(0, room);
@@ -94,6 +103,7 @@ void status_display(int room, int data) {
       lcd_msg = lcd_msg + "AL ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
+      buz_status(1);
     }
   }
 
@@ -106,18 +116,21 @@ void status_display(int room, int data) {
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
       lcd_msg = "";
+      buz_status(0);
     }
     if (char_msg[1] == '1') {
       lcd.setCursor(0, room);
       lcd_msg = lcd_msg + "CO2 ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
+      buz_status(1);
     }
     if (char_msg[2] == '1') {
       lcd.setCursor(0, room);
       lcd_msg = lcd_msg + "AL ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
+      buz_status(1);
     }
   }
   if (room == 3 && char_msg[0] == '3') {
@@ -129,18 +142,21 @@ void status_display(int room, int data) {
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
       lcd_msg = "";
+      buz_status(0);
     }
     if (char_msg[1] == '1') {
       lcd.setCursor(0, room);
       lcd_msg = lcd_msg + "CO2 ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
+      buz_status(1);
     }
     if (char_msg[2] == '1') {
       lcd.setCursor(0, room);
       lcd_msg = lcd_msg + "AL ";
       lcd_data = " R" + String(room) + "  | " + lcd_msg;
       lcd.print(lcd_data);
+      buz_status(1);
     }
   }
 
@@ -177,8 +193,15 @@ void setup() {
   radio.openReadingPipe(0, address);
   radio.openWritingPipe(address2);
   radio.setPALevel(RF24_PA_MIN);
-
-  delay(2000);
+  pinMode(A0, OUTPUT);
+  analogWrite(A0, 255);
+  buz_status(1);
+  delay(200);
+  buz_status(0);
+  delay(500);
+  buz_status(1);
+  delay(500);
+  buz_status(0);
 
   // lcd.setBacklight(LOW);
 }
@@ -197,7 +220,7 @@ void loop() {
   if (data == 0) {
     data = room_status(2);
   }
-  status_display(2, 20000);
+  status_display(2, data);
   delay(20);
 
   data = room_status(3);

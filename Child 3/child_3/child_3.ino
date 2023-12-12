@@ -29,10 +29,10 @@ void setup() {
 void ledLight(int state) {
   if (state == 1) {
     analogWrite(A3, 0);
-    analogWrite(A4, 150);
-    delay(2000);
+    analogWrite(A4, 250);
+
   } else {
-    analogWrite(A3, 240);
+    analogWrite(A3, 200);
     analogWrite(A4, 0);
   }
 }
@@ -47,29 +47,24 @@ void loop() {
   // Serial.println(gasRead);
   // Serial.println(alcohol);
 
-  if (gasRead >= 160) {
+  if (gasRead >= 170) {
     room_reply_arr = room_reply_arr + 1000;
     led_state = 1;
   }
 
-  if (alcohol >= 30) {
+  if (alcohol >= 60) {
     room_reply_arr = room_reply_arr + 100;
     led_state = 1;
   }
 
 
-
+  ledLight(led_state);
   radio.startListening();
   radio.read(&incoming_request, sizeof(incoming_request));
 
   if (incoming_request == 3) {
     Serial.println(incoming_request);
 
-    // room_reply_arr[0] = 1; // room_no
-    // room_reply_arr[2] = 0; // gas
-    // room_reply_arr[3] = 0; // alcohol
-    // room_reply_arr[4] = 0; // temp
-    // room_reply_arr[5] = 0; // humidity
 
     radio.stopListening();
 
@@ -77,6 +72,6 @@ void loop() {
       radio.write(&room_reply_arr, sizeof(room_reply_arr));
     }
   }
-  //ledLight(led_state);
+
   led_state = 0;
 }
