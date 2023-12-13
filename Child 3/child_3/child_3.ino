@@ -26,7 +26,7 @@ void setup() {
   // lcd.setBacklight(LOW);
 }
 
-void ledLight(int state) {
+int ledLight(int state) {
   if (state == 1) {
     analogWrite(A3, 0);
     analogWrite(A4, 250);
@@ -35,9 +35,10 @@ void ledLight(int state) {
     analogWrite(A3, 200);
     analogWrite(A4, 0);
   }
+  return 0;
 }
 void loop() {
-    led_state = 0;
+  led_state = 0;
   int gasRead = analogRead(A0);
   int alcohol = analogRead(A1);
   Serial.println(gasRead);
@@ -57,21 +58,23 @@ void loop() {
     led_state = 1;
   }
 
-
-  ledLight(led_state);
+  //ledLight(led_state);
+  //Serial.println(room_reply_arr);
   radio.startListening();
   radio.read(&incoming_request, sizeof(incoming_request));
 
   if (incoming_request == 3) {
-    Serial.println(incoming_request);
+    //Serial.println(incoming_request);
 
 
     radio.stopListening();
 
     for (int i = 0; i <= 50; i++) {
       radio.write(&room_reply_arr, sizeof(room_reply_arr));
+      ledLight(led_state);
     }
   }
+
 
   led_state = 0;
 }
